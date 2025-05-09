@@ -1,0 +1,63 @@
+<section class="opportunites-section">
+    <h2 class="section-title">Opportunités</h2>
+    
+    <!-- État de chargement -->
+    <div class="loading-container" *ngIf="loading">
+      <p>Chargement des opportunités...</p>
+    </div>
+    
+    <!-- État d'erreur -->
+    <div class="error-container" *ngIf="error">
+      <p>Impossible de charger les opportunités. Veuillez réessayer plus tard.</p>
+    </div>
+    
+    <!-- Grille de contenu -->
+    <div class="opportunities-grid" *ngIf="!loading && !error">
+      <ng-container *ngFor="let opportunity of opportunities">
+        <a [href]="'/opportunites-details/' + opportunity.id" class="opportunity-card">
+          <!-- Image au-dessus -->
+          <div class="image-container">
+            <img [src]="getFullImageUrl(opportunity.img)" [alt]="opportunity.titre" 
+                 onerror="this.src='assets/images/placeholder.jpg'">
+            <div class="hover-overlay">
+              <p class="overlay-text">Par: {{ opportunity.auteur }}</p>
+              <a [href]="'/opportunites-details/' + opportunity.id" class="learn-more" (click)="$event.stopPropagation()">Savoir Plus</a>
+            </div>
+          </div>
+          
+          <!-- Contenu textuel en dessous -->
+          <div class="card-content">
+            <div class="card-type">{{ opportunity.categorie }}</div>
+            <h3 class="card-title">{{ opportunity.titre }}</h3>
+            <p class="card-date">{{ formatDate(opportunity.date) }}</p> 
+          </div>
+        </a>
+      </ng-container>
+    </div>
+    
+    <!-- Contrôles de pagination -->
+    <div class="pagination-controls" *ngIf="!loading && !error && opportunities.length > 0">
+      <button class="pagination-btn prev" [disabled]="currentPage === 0" (click)="prevPage()">
+        &laquo; Précédent
+      </button>
+      
+      <div class="page-indicators">
+        <button 
+          *ngFor="let page of getPagesArray(); let i = index" 
+          class="page-btn" 
+          [class.active]="i === currentPage"
+          (click)="goToPage(i)">
+          {{ i + 1 }}
+        </button>
+      </div>
+      
+      <button class="pagination-btn next" [disabled]="currentPage === totalPages - 1" (click)="nextPage()">
+        Suivant &raquo;
+      </button>
+    </div>
+    
+    <!-- État sans contenu -->
+    <div class="no-content" *ngIf="!loading && !error && opportunities.length === 0">
+      <p>Aucune opportunité disponible pour le moment.</p>
+    </div>
+  </section>

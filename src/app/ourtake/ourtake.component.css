@@ -1,0 +1,242 @@
+/* ourtake.component.css */
+.newsletter-section {
+  width: 100%;
+  background-color: #77909c;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  height: auto; /* Changé de 50px à auto pour plus de flexibilité */
+}
+
+.newsletter-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  position: relative;
+  padding: 4rem;
+  left: -130px; /* Préservé comme demandé */
+}
+
+.text-content {
+  width: 66.66%; /* 2/3 of the space */
+  color: white;
+  padding-right: 4rem;
+}
+
+h2 {
+  font-size: 4.2rem;
+  font-weight: normal;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+  max-width: 580px;
+}
+
+.subscribe-btn {
+  background-color: white;
+  color: #877a6f;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.subscribe-btn:hover {
+  background-color: #877a6f;
+  color: white;
+}
+
+.image-container {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 33.33%; /* 1/3 of the space */
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.image-container img {
+  width: flex;
+  position: relative;
+  left: 30px;
+  /* width: 100%;
+  height: 100%; */
+  object-fit: cover;
+}
+
+/* Conserver le positionnement exact des boutons de magasin comme demandé */
+.store-buttons {
+  display: flex;
+  position: relative;
+  right: 67px;
+  margin-top: 30px;
+}
+
+.store-buttons a img {
+  height: 90px;
+  transition: transform 0.3s ease;
+}
+
+.play-store {
+  position: relative;
+  right: 50px;
+}
+
+.store-buttons a:hover img {
+  transform: scale(1.05);
+}
+
+/* Améliorations de la responsivité */
+@media (max-width: 1400px) {
+  .newsletter-content {
+    padding: 3rem;
+  }
+  
+  h2 {
+    font-size: 3.8rem;
+  }
+}
+
+@media (max-width: 1200px) {
+  .text-content {
+    width: 60%;
+    padding-right: 2rem;
+  }
+  
+  .image-container {
+    width: 40%;
+  }
+  
+  h2 {
+    font-size: 3.2rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .newsletter-section {
+    min-height: auto;
+    padding: 4rem 0;
+  }
+  
+  .newsletter-content {
+    flex-direction: column;
+    padding: 3rem 2rem;
+    left: 0; /* Réinitialiser le décalage sur tablette */
+  }
+
+  .text-content {
+    width: 100%;
+    padding-right: 0;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .image-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Limiter la largeur maximale sur tablette */
+    margin: 3rem auto 0; /* Centrer l'image et ajouter de l'espace */
+    transform: none;
+    top: auto;
+    height: auto; /* Hauteur adaptative */
+  }
+  
+  .image-container img {
+    width: 100%;
+    max-width: 500px; /* Limiter la taille de l'image */
+    margin: 0 auto; /* Centrer l'image */
+    left: 0; /* Réinitialiser le décalage sur tablette/mobile */
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+
+  p {
+    margin: 0 auto 2rem;
+  }
+  
+  /* Ajustement des boutons de magasin pour tablette */
+  .store-buttons {
+    right: 0;
+    justify-content: center;
+  }
+  
+  .play-store {
+    right: 50px; /* Maintenir l'espacement spécifique */
+  }
+}
+
+@media (max-width: 768px) {
+  .newsletter-section {
+    padding-bottom: 3rem; /* Assurer un espace suffisant en bas */
+  }
+  
+  .newsletter-content {
+    padding: 2rem 1.5rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1.125rem;
+  }
+  
+  .image-container {
+    margin-top: 2rem; /* Réduire l'espace sur mobile */
+    max-width: 100%; /* Utiliser toute la largeur disponible */
+  }
+  
+  .image-container img {
+    max-width: 100%; /* S'adapter à la largeur du conteneur */
+  }
+  
+  .store-buttons a img {
+    height: 80px; /* Légèrement plus petit sur mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletter-section {
+    padding-bottom: 2rem;
+  }
+  
+  .newsletter-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1rem;
+  }
+  
+  .image-container {
+    margin-top: 1.5rem;
+  }
+  
+  .store-buttons a img {
+    height: 70px;
+  }
+  
+  /* Préserver la distance entre les logos même sur mobile */
+  .play-store {
+    right: 50px;
+  }
+}

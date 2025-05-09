@@ -1,0 +1,64 @@
+<!-- latest.component.html -->
+<section class="latest-section">
+  <h2 class="section-title">Actualités</h2>
+  
+  <!-- Loading state -->
+  <div class="loading-container" *ngIf="loading">
+    <p>Chargement des actualités...</p>
+  </div>
+  
+  <!-- Error state -->
+  <div class="error-container" *ngIf="error">
+    <p>Impossible de charger les actualités. Veuillez réessayer plus tard.</p>
+  </div>
+  
+  <!-- Content grid -->
+  <div class="insights-grid" *ngIf="!loading && !error">
+    <ng-container *ngFor="let insight of insights">
+      <div class="insight-card">
+        <!-- Image maintenant au-dessus -->
+        <div class="image-container">
+          <img [src]="getFullImageUrl(insight.img)" [alt]="insight.titre" 
+               onerror="this.src='assets/images/placeholder.jpg'">
+          <div class="hover-overlay">
+            <p class="overlay-text">Par: {{ insight.auteur }}</p>
+            <button class="learn-more" (click)="navigateToDetails(insight.id); $event.stopPropagation();">Savoir Plus</button>
+          </div>
+        </div>
+        
+        <!-- Contenu textuel maintenant en dessous -->
+        <div class="card-content" (click)="navigateToDetails(insight.id)">
+          <div class="card-type">{{ insight.categorie }}</div>
+          <h3 class="card-title">{{ insight.titre }}</h3>
+          <p class="card-date">{{ formatDate(insight.date) }}</p> 
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  
+  <!-- Pagination controls -->
+  <div class="pagination-controls" *ngIf="!loading && !error && allInsights.length > 0">
+    <button class="pagination-btn prev" [disabled]="currentPage === 0" (click)="prevPage()">
+      &laquo; Précédent
+    </button>
+    
+    <div class="page-indicators">
+      <button 
+        *ngFor="let page of getPagesArray(); let i = index" 
+        class="page-btn" 
+        [class.active]="i === currentPage"
+        (click)="goToPage(i)">
+        {{ i + 1 }}
+      </button>
+    </div>
+    
+    <button class="pagination-btn next" [disabled]="currentPage === totalPages - 1" (click)="nextPage()">
+      Suivant &raquo;
+    </button>
+  </div>
+  
+  <!-- No content state -->
+  <div class="no-content" *ngIf="!loading && !error && allInsights.length === 0">
+    <p>Aucune actualité disponible pour le moment.</p>
+  </div>
+</section>
