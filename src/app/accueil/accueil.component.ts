@@ -5,6 +5,7 @@ import { LearnComponent } from '../learn/learn.component';
 import { OurtakeComponent } from '../ourtake/ourtake.component';
 import { LatestComponent } from '../latest/latest.component';
 import { CommitmentComponent } from '../commitment/commitment.component';
+import { OpportunitesComponent } from '../opportunites/opportunites.component';
 
 @Component({
   selector: 'app-accueil',
@@ -16,6 +17,7 @@ import { CommitmentComponent } from '../commitment/commitment.component';
     OurtakeComponent,
     LatestComponent,
     CommitmentComponent,
+    OpportunitesComponent
   ],
   templateUrl: './accueil.component.html',
   styleUrls: ['./accueil.component.css']

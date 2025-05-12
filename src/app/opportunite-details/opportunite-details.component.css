@@ -1,0 +1,139 @@
+/* opportunite-details.component.css */
+.opportunite-details-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  
+  .loading-container, .error-container {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #777;
+  }
+  
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    color: #0066cc;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .back-btn:hover {
+    color: #004c99;
+  }
+  
+  .back-icon {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .opportunite-header {
+    margin-bottom: 2rem;
+  }
+  
+  .opportunite-category {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: #0066cc;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  
+  .opportunite-title {
+    font-size: 2.25rem;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .opportunite-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #777;
+    font-size: 0.9rem;
+  }
+  
+  .author-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .author-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    object-fit: cover;
+  }
+  
+  .opportunite-date {
+    font-style: italic;
+  }
+  
+  .opportunite-main-image {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .opportunite-main-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .opportunite-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 2.5rem;
+  }
+  
+  .opportunite-description p {
+    margin-bottom: 1.25rem;
+  }
+  
+  .opportunite-actions {
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+  
+  .action-btn {
+    display: inline-block;
+    background-color: #0066cc;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  
+  .action-btn:hover {
+    background-color: #004c99;
+  }
+  
+  .opportunite-footer {
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+  }
+  
+  .share-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .share-links span {
+    color: #777;
+    font-size: 0.9rem;
+  }

@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { InfoService, ContentItem, ActuResponse } from '../info.service';
+import { OpportuniteService, OpportuniteItem, OpportuniteResponse } from '../opportinute.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
-  selector: 'app-latest',
+  selector: 'app-opportunites',
   standalone: true,
   imports: [CommonModule, HttpClientModule],
-  templateUrl: './latest.component.html',
-  styleUrl: './latest.component.css'
+  templateUrl: './opportunites.component.html',
+  styleUrl: './opportunites.component.css'
 })
-export class LatestComponent implements OnInit {
-  insights: ContentItem[] = [];
-  allInsights: ContentItem[] = []; // Stocke toutes les actualités
+export class OpportunitesComponent implements OnInit {
+  opportunites: OpportuniteItem[] = [];
+  allOpportunites: OpportuniteItem[] = []; // Stocke toutes les opportunités
   loading = true;
   error = false;
   imageBaseUrl = 'http://peeyconnect.net/repertoire_upload/';
@@ -24,43 +24,43 @@ export class LatestComponent implements OnInit {
   totalPages = 0;
 
   constructor(
-    private infoService: InfoService,
+    private opportuniteService: OpportuniteService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.fetchLatestInsights();
+    this.fetchOpportunites();
   }
 
-  fetchLatestInsights(): void {
+  fetchOpportunites(): void {
     this.loading = true;
-    this.infoService.getActus(0, 12).subscribe({
-      next: (response: ActuResponse) => {
-        this.allInsights = response.content;
-        this.totalPages = Math.ceil(this.allInsights.length / this.itemsPerPage);
-        this.updateDisplayedInsights();
+    this.opportuniteService.getOpportunites(0, 12).subscribe({
+      next: (response: OpportuniteResponse) => {
+        this.allOpportunites = response.content;
+        this.totalPages = Math.ceil(this.allOpportunites.length / this.itemsPerPage);
+        this.updateDisplayedOpportunites();
         this.loading = false;
-        console.log('Actualités chargées:', this.allInsights);
+        console.log('Opportunités chargées:', this.allOpportunites);
       },
       error: (err) => {
-        console.error('Error fetching insights:', err);
+        console.error('Error fetching opportunites:', err);
         this.error = true;
         this.loading = false;
       }
     });
   }
 
-  // Mettre à jour les insights affichés en fonction de la page courante
-  updateDisplayedInsights(): void {
+  // Mettre à jour les opportunités affichées en fonction de la page courante
+  updateDisplayedOpportunites(): void {
     const startIndex = this.currentPage * this.itemsPerPage;
-    this.insights = this.allInsights.slice(startIndex, startIndex + this.itemsPerPage);
+    this.opportunites = this.allOpportunites.slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   // Navigation entre les pages
   goToPage(pageIndex: number): void {
     if (pageIndex >= 0 && pageIndex < this.totalPages) {
       this.currentPage = pageIndex;
-      this.updateDisplayedInsights();
+      this.updateDisplayedOpportunites();
     }
   }
 
@@ -68,7 +68,7 @@ export class LatestComponent implements OnInit {
   nextPage(): void {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
-      this.updateDisplayedInsights();
+      this.updateDisplayedOpportunites();
     }
   }
 
@@ -76,7 +76,7 @@ export class LatestComponent implements OnInit {
   prevPage(): void {
     if (this.currentPage > 0) {
       this.currentPage--;
-      this.updateDisplayedInsights();
+      this.updateDisplayedOpportunites();
     }
   }
 
@@ -86,7 +86,7 @@ export class LatestComponent implements OnInit {
     return this.imageBaseUrl + imagePath;
   }
 
-  // Navigation vers la page détails - Méthode améliorée
+  // Navigation vers la page détails
   navigateToDetails(id: number): void {
     if (!id || isNaN(id)) {
       console.error('ID invalide:', id);
@@ -95,8 +95,7 @@ export class LatestComponent implements OnInit {
     
     console.log('Navigation vers les détails avec ID:', id);
     
-    // Utilisation de NavigateByUrl pour un contrôle plus précis
-    this.router.navigateByUrl(`/details/${id}`).then(success => {
+    this.router.navigateByUrl(`/opportunite-details/${id}`).then(success => {
       if (!success) {
         console.error('La navigation a échoué');
       }
@@ -120,4 +119,3 @@ export class LatestComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i);
   }
 }
-// le html de latest qui affiche les actualites 
