@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { OpportuniteService, OpportuniteItem } from '../opportinute.service';
 import { HttpClientModule } from '@angular/common/http';
-
+import { distinctUntilChanged, filter } from 'rxjs';
 
 @Component({
   selector: 'app-opportunite-details',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, RouterModule],
   templateUrl: './opportunite-details.component.html',
   styleUrl: './opportunite-details.component.css'
 })
@@ -17,45 +17,64 @@ export class OpportuniteDetailsComponent implements OnInit {
   loading = true;
   error = false;
   imageBaseUrl = 'http://peeyconnect.net/repertoire_upload/';
-  
   constructor(
     private opportuniteService: OpportuniteService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const idParam = params.get('id');
-      
-      if (idParam) {
-        const id = parseInt(idParam, 10);
-        if (!isNaN(id)) {
-          this.fetchOpportuniteDetails(id);
-        } else {
-          this.error = true;
-          this.loading = false;
-          console.error('ID invalide:', idParam);
-        }
-      } else {
-        this.error = true;
-        this.loading = false;
-        console.error('Aucun ID fourni');
-      }
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
+    // Écoute des changements de route
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.loadOpportunite();
     });
   }
 
+  ngOnInit(): void {
+    this.loadOpportunite();
+  }
+
+  private loadOpportunite(): void {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    
+    if (idParam && !isNaN(+idParam)) {
+      this.fetchOpportuniteDetails(+idParam);
+    } else {
+      this.handleError('ID invalide ou manquant');
+      this.router.navigate(['/']); // Redirection vers la page d'accueil
+    }
+  }
+
+  private handleError(message: string): void {
+    console.error(message);
+    this.error = true;
+    this.loading = false;
+    this.cdr.detectChanges();
+  }
+
   fetchOpportuniteDetails(id: number): void {
+    this.loading = true;
+    this.error = false;
+    this.opportunite = null;
+    
+    console.log(`Tentative de récupération de l'opportunité avec ID: ${id}`);
+    
     this.opportuniteService.getOpportuniteById(id).subscribe({
       next: (opportunite) => {
-        this.opportunite = opportunite;
+        if (opportunite) {
+          this.opportunite = opportunite;
+          document.title = `${opportunite.titre} | PeeyConnect`;
+        } else {
+          this.handleError('Opportunité non trouvée ou vide');
+        }
         this.loading = false;
-        console.log('Opportunité chargée:', opportunite);
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Erreur lors du chargement de l\'opportunité:', err);
-        this.error = true;
-        this.loading = false;
+        this.handleError('Erreur de chargement');
       }
     });
   }
@@ -82,8 +101,33 @@ export class OpportuniteDetailsComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/']);
   }
-  navigateToDetails(id: number): void {
-    console.log('Navigation vers opportunité ID:', id); // Pour débogage
-    this.router.navigate(['/opportunite-details', id]);
+
+  // Méthode pour partager sur les réseaux sociaux
+  shareOnSocial(platform: string): void {
+    if (!this.opportunite) return;
+    
+    let shareUrl = '';
+    const currentUrl = window.location.href;
+    const text = `Découvrez cette opportunité: ${this.opportunite.titre}`;
+    
+    switch(platform) {
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
+        break;
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + currentUrl)}`;
+        break;
+    }
+    
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
   }
 }
+// le html 

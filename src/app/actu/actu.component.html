@@ -1,0 +1,83 @@
+<div class="flex">
+    <app-sidebar></app-sidebar>
+  
+  <div class="actu-container">
+    <div class="section-title">
+      <h2>Actualités</h2>
+      <!-- <div class="underline"></div> -->
+    </div>
+  
+    <div *ngIf="loading" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Chargement des actualités...</p>
+    </div>
+  
+    <div *ngIf="error" class="error-message">
+      <p>Une erreur est survenue lors du chargement des actualités. Veuillez réessayer plus tard.</p>
+    </div>
+  
+    <div *ngIf="!loading && !error" class="actus-list">
+      <div class="actu-card" *ngFor="let actu of actusList" (click)="handleCardClick($event, actu)">
+        <div class="actu-image">
+          <img [src]="baseUrl + actu.img" [alt]="actu.titre" onerror="this.src='assets/images/placeholder.jpg'">
+          <div class="actu-category">
+            <span>{{ actu.categorie }}</span>
+          </div>
+        </div>
+        <div class="actu-content">
+          <h3>{{ actu.titre }}</h3>
+          <p class="actu-description">{{ actu.descr }}</p>
+          <div class="actu-info">
+            <div class="actu-author">
+              <img [src]="baseUrl + actu.auteurimg" [alt]="actu.auteur" onerror="this.src='assets/images/user-placeholder.jpg'">
+              <span>{{ actu.auteur }}</span>
+            </div>
+            <div class="actu-date">
+              <i class="fa fa-calendar"></i>
+              <span>{{ formatDate(actu.date) }}</span>
+            </div>
+          </div>
+          <!-- Bouton de validation -->
+          <button 
+            class="validation-btn" 
+            [class.valid]="actu.isvalid" 
+            [class.invalid]="!actu.isvalid"
+            [disabled]="validationLoading[actu.id]">
+            <span *ngIf="!validationLoading[actu.id]">
+              {{ actu.isvalid ? 'Invalider' : 'Valider' }}
+            </span>
+            <span *ngIf="validationLoading[actu.id]" class="spinner-small"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Pagination -->
+    <div *ngIf="totalPages > 1" class="pagination">
+      <button 
+        [disabled]="currentPage === 0" 
+        (click)="previousPage()" 
+        class="pagination-btn"
+        [class.disabled]="currentPage === 0">
+        <i class="fa fa-chevron-left"></i>
+      </button>
+      
+      <div class="page-numbers">
+        <button *ngFor="let page of getPageNumbers()" 
+          (click)="goToPage(page)"
+          class="page-number"
+          [class.active]="currentPage === page">
+          {{ page + 1 }}
+        </button>
+      </div>
+      
+      <button 
+        [disabled]="currentPage === totalPages - 1" 
+        (click)="nextPage()" 
+        class="pagination-btn"
+        [class.disabled]="currentPage === totalPages - 1">
+        <i class="fa fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+  </div>

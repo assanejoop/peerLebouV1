@@ -6,19 +6,21 @@ import { OurtakeComponent } from '../ourtake/ourtake.component';
 import { LatestComponent } from '../latest/latest.component';
 import { CommitmentComponent } from '../commitment/commitment.component';
 import { OpportunitesComponent } from '../opportunites/opportunites.component';
+import { FooterComponent } from "../footer/footer.component";
 
 @Component({
   selector: 'app-accueil',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule, 
+    CommonModule,
+    RouterModule,
     LearnComponent,
     OurtakeComponent,
     LatestComponent,
     CommitmentComponent,
-    OpportunitesComponent
-  ],
+    OpportunitesComponent,
+    FooterComponent
+],
   templateUrl: './accueil.component.html',
   styleUrls: ['./accueil.component.css']
 })

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 // Interface for individual content item
 export interface ContentItem {
-contenu: any;
   id: number;
   auteur: string;
   auteurimg: string;
@@ -18,6 +17,7 @@ contenu: any;
   role: string;
   titre: string;
   alaUne: boolean;
+  contenu: string; // Contenu HTML de l'article
 }
 
 // Interface for pagination info
@@ -57,42 +57,46 @@ export interface ActuResponse {
   providedIn: 'root'
 })
 export class InfoService {
-  getActuDetail(id: number) {
-    throw new Error('Method not implemented.');
-  }
-  private readonly apiUrl = 'https://peeyconnect.net:8080/api/v1/actu/actus';
+  toggleActuValidation(status: boolean, id: number): Observable<ContentItem> {
+    return this.http.put<ContentItem>(`${this.baseApiUrl }/${id}/validation`, { isvalid: status });
+  } 
+  private readonly baseApiUrl = 'https://peeyconnect.net:8080/api/v1';
+  
+  // URL pour les actualités
+  private readonly actuApiUrl = `${this.baseApiUrl}/actu/actus`;
 
   constructor(private http: HttpClient) { }
 
   /**
-   * Fetches actus data with pagination
-   * @param page Page number (zero-based)
-   * @param size Number of items per page
-   * @returns Observable of ActuResponse
+   * Récupère les actualités avec pagination
+   * @param page Numéro de page (commence à 0)
+   * @param size Nombre d'éléments par page
+   * @returns Observable de type ActuResponse
    */
   getActus(page: number = 0, size: number = 12): Observable<ActuResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<ActuResponse>(this.apiUrl, { params });
+    return this.http.get<ActuResponse>(this.actuApiUrl, { params });
   }
 
   /**
-   * Fetches a specific actu by ID
-   * @param id The ID of the actu
-   * @returns Observable of ContentItem
+   * Récupère une actualité spécifique par son ID
+   * @param id L'ID de l'actualité
+   * @returns Observable de type ContentItem
    */
   getActuById(id: number): Observable<ContentItem> {
-    return this.http.get<ContentItem>(`${this.apiUrl}/${id}`);
+    // URL correcte pour obtenir une actualité par ID
+    return this.http.get<ContentItem>(`${this.baseApiUrl}/actu/${id}`);
   }
 
   /**
-   * Fetches actus filtered by category
-   * @param category The category to filter by
-   * @param page Page number (zero-based)
-   * @param size Number of items per page
-   * @returns Observable of ActuResponse
+   * Récupère les actualités filtrées par catégorie
+   * @param category La catégorie à filtrer
+   * @param page Numéro de page (commence à 0)
+   * @param size Nombre d'éléments par page
+   * @returns Observable de type ActuResponse
    */
   getActusByCategory(category: string, page: number = 0, size: number = 12): Observable<ActuResponse> {
     const params = new HttpParams()
@@ -100,14 +104,14 @@ export class InfoService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<ActuResponse>(`${this.apiUrl}/category`, { params });
+    return this.http.get<ActuResponse>(`${this.actuApiUrl}/category`, { params });
   }
 
   /**
-   * Fetches featured actus (alaUne = true)
-   * @param page Page number (zero-based)
-   * @param size Number of items per page
-   * @returns Observable of ActuResponse
+   * Récupère les actualités mises en avant (alaUne = true)
+   * @param page Numéro de page (commence à 0)
+   * @param size Nombre d'éléments par page
+   * @returns Observable de type ActuResponse
    */
   getFeaturedActus(page: number = 0, size: number = 12): Observable<ActuResponse> {
     const params = new HttpParams()
@@ -115,6 +119,6 @@ export class InfoService {
       .set('page', page.toString())
       .set('size', size.toString());
 
-    return this.http.get<ActuResponse>(`${this.apiUrl}/featured`, { params });
+    return this.http.get<ActuResponse>(`${this.actuApiUrl}/featured`, { params });
   }
 }

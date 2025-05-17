@@ -4,37 +4,46 @@
 }
 
 .section-title {
-  text-align: center;
+  /* text-align: center; */
   margin-bottom: 2rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
+  position: relative;
+  left: 16.5%;
 }
 
 .opportunites-grid {
   display: grid;
-  /* Exactement 4 cartes par ligne comme dans latest.component.css */
-  grid-template-columns: repeat(4, 1fr);
+  /* Modifier pour 3 cartes par ligne et centrer */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2rem;
   padding: 0 1rem;
   margin-bottom: 2rem;
+  justify-content: center;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Ajustement responsive identique à latest.component.css */
+/* Ajustement responsive */
 @media (max-width: 1200px) {
   .opportunites-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 1000px;
   }
 }
 
 @media (max-width: 900px) {
   .opportunites-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 800px;
   }
 }
 
 @media (max-width: 600px) {
   .opportunites-grid {
     grid-template-columns: 1fr;
+    max-width: 400px;
   }
 }
 
@@ -45,7 +54,6 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   height: 100%;
-  
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -56,7 +64,7 @@
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Image maintenant au-dessus comme dans latest.component.css */
+/* Image maintenant au-dessus */
 .image-container {
   position: relative;
   height: 200px;
@@ -74,7 +82,7 @@
   transform: scale(1.05);
 }
 
-/* Texte en dessous comme dans latest.component.css */
+/* Texte maintenant en dessous */
 .card-content {
   padding: 1.5rem;
   flex-grow: 1;
@@ -156,66 +164,24 @@
   color: #e74c3c;
 }
 
-/* Styles pour la pagination identiques à latest.component.css */
-.pagination-controls {
+/* Styles pour le bouton "Voir Plus" */
+.voir-plus-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 2rem 0;
-  gap: 1rem;
+  margin-top: 2rem;
 }
 
-.pagination-btn {
-  background-color: white;
-  border: 1px solid #ddd;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.pagination-btn:hover:not([disabled]) {
-  background-color: #f8f8f8;
-  border-color: #bbb;
-  color: #333;
-}
-
-.pagination-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.page-indicators {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.page-btn {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: white;
-  border: 1px solid #ddd;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.page-btn.active {
+.voir-plus-btn, .voir-moins-btn {
   background-color: #007bff;
   color: white;
-  border-color: #007bff;
-  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.page-btn:hover:not(.active) {
-  background-color: #f8f8f8;
-  border-color: #bbb;
-  color: #333;
+.voir-plus-btn:hover, .voir-moins-btn:hover {
+  background-color: #0056b3;
 }

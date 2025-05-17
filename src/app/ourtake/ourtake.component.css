@@ -75,26 +75,63 @@ p {
   object-fit: cover;
 }
 
-/* Conserver le positionnement exact des boutons de magasin comme demandé */
+/* Store Buttons Styling */
 .store-buttons {
   display: flex;
+  align-items: center;
+  /* gap: 20px;  */
   position: relative;
-  right: 67px;
   margin-top: 30px;
 }
 
+.store-buttons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .apple-store {
+  height: 80px !important; 
+  width: auto !important;
+  max-height: 60px !important;
+} */
+
+.play-store {
+  height: 46px !important; /* Force same height */
+  width: auto !important;
+  max-height: 60px !important;
+}
 .store-buttons a img {
-  height: 90px;
+  height: 60px; /* Fixed height for both logos */
+  width: auto; /* Maintain aspect ratio */
+  object-fit: contain; /* Ensure image fits within the fixed height */
   transition: transform 0.3s ease;
 }
 
-.play-store {
+.apple-store{
   position: relative;
-  right: 50px;
+  height: 60px;
 }
-
 .store-buttons a:hover img {
   transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .store-buttons {
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .store-buttons a img {
+    height: 50px; /* Slightly smaller on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .store-buttons a img {
+    height: 45px; /* Even smaller on very small screens */
+  }
 }
 
 /* Améliorations de la responsivité */

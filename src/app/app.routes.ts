@@ -4,10 +4,35 @@ import { DetailsComponent } from './details/details.component';
 import { OpportunitesComponent } from './opportunites/opportunites.component';
 import { OpportuniteDetailsComponent } from './opportunite-details/opportunite-details.component';
 import { AccueilComponent } from './accueil/accueil.component';
+import { LoginComponent } from './login/login.component';
+import { UtilisateurComponent } from './utilisateur/utilisateur.component';
+import { CategorieListComponent } from './cathegorie-list/cathegorie-list.component';
+ import { OpporComponent } from './oppor/oppor.component';
+import { ActuComponent } from './actu/actu.component';
 
 export const routes: Routes = [
   { 
     path: '', 
+    redirectTo: 'accueil',
+    pathMatch: 'full'
+  },
+  { 
+    path: 'login',
+    component: LoginComponent,
+    title: 'Connexion'
+  },
+  {
+    path: 'utilisateurs',
+    component: UtilisateurComponent,
+    title: 'Utilisateurs'
+  },
+  {
+    path: 'parametres',
+    component: CategorieListComponent,
+    title: 'Parametres'
+  },
+  { 
+    path: 'accueil', 
     component: AccueilComponent,
     title: 'Accueil'
   },
@@ -30,6 +55,16 @@ export const routes: Routes = [
     title: 'Opportunités' 
   },
   { 
+    path: 'oppor', 
+    component: OpporComponent,
+    title: 'Oppor' 
+  },
+  { 
+    path: 'actu', 
+    component: ActuComponent,
+    title: 'Actu' 
+  },
+  { 
     path: 'opportunite-details/:id', 
     component: OpportuniteDetailsComponent,
     title: 'Détails opportunité',
@@ -39,7 +74,7 @@ export const routes: Routes = [
   },
   { 
     path: '**', 
-    redirectTo: '',
+    redirectTo: 'login',
     pathMatch: 'full' 
   }
 ];

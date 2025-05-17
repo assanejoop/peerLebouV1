@@ -13,47 +13,40 @@
   </div>
   
   <!-- Content grid -->
-  <div class="opportunites-grid" *ngIf="!loading && !error">
-    <ng-container *ngFor="let opportunite of opportunites">
-      <div class="opportunite-card" (click)="navigateToDetails(opportunite.id)">
-        <!-- Image maintenant au-dessus -->
-        <div class="image-container">
-          <img [src]="getFullImageUrl(opportunite.img)" [alt]="opportunite.titre" 
-               onerror="this.src='assets/images/placeholder.jpg'">
-          <div class="hover-overlay">
-            <p class="overlay-text">Par: {{ opportunite.auteur }}</p>
-            <button class="learn-more" (click)="navigateToDetails(opportunite.id); $event.stopPropagation();">Savoir Plus</button>
-          </div>
-        </div>
-        
-        <!-- Contenu textuel maintenant en dessous -->
-        <div class="card-content" (click)="navigateToDetails(opportunite.id)">
-          <div class="card-type">{{ opportunite.categorie }}</div>
-          <h3 class="card-title">{{ opportunite.titre }}</h3>
-          <p class="card-date">{{ formatDate(opportunite.date) }}</p> 
+  <div class="opportunites-grid" *ngIf="!loading && !error && opportunites.length > 0">
+    <div class="opportunite-card" *ngFor="let opportunite of opportunites">
+      <!-- Image maintenant au-dessus -->
+      <div class="image-container">
+        <img [src]="getFullImageUrl(opportunite.img)" [alt]="opportunite.titre" 
+             onerror="this.src='assets/images/placeholder.jpg'">
+        <div class="hover-overlay">
+          <p class="overlay-text">Par: {{ opportunite.auteur }}</p>
+          <button class="learn-more" (click)="navigateToDetails(opportunite.id); $event.stopPropagation();">Savoir Plus</button>
         </div>
       </div>
-    </ng-container>
+      
+      <!-- Contenu textuel maintenant en dessous -->
+      <div class="card-content" (click)="navigateToDetails(opportunite.id)">
+        <div class="card-type">{{ opportunite.categorie }}</div>
+        <h3 class="card-title">{{ opportunite.titre }}</h3>
+        <p class="card-date">{{ formatDate(opportunite.date) }}</p> 
+      </div>
+    </div>
   </div>
   
-  <!-- Pagination controls -->
-  <div class="pagination-controls" *ngIf="!loading && !error && allOpportunites.length > 0">
-    <button class="pagination-btn prev" [disabled]="currentPage === 0" (click)="prevPage()">
-      &laquo; Précédent
+  <!-- Voir plus/moins buttons -->
+  <div class="voir-plus-container" *ngIf="!loading && !error && allOpportunites.length > initialDisplayCount">
+    <button 
+      *ngIf="!showAllOpportunites" 
+      class="voir-plus-btn" 
+      (click)="showAllContent()">
+      Voir Plus
     </button>
-    
-    <div class="page-indicators">
-      <button 
-        *ngFor="let page of getPagesArray(); let i = index" 
-        class="page-btn" 
-        [class.active]="i === currentPage"
-        (click)="goToPage(i)">
-        {{ i + 1 }}
-      </button>
-    </div>
-    
-    <button class="pagination-btn next" [disabled]="currentPage === totalPages - 1" (click)="nextPage()">
-      Suivant &raquo;
+    <button 
+      *ngIf="showAllOpportunites" 
+      class="voir-moins-btn" 
+      (click)="showLessContent()">
+      Voir Moins
     </button>
   </div>
   

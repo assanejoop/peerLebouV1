@@ -51,9 +51,16 @@ export interface OpportuniteResponse {
   providedIn: 'root'
 })
 export class OpportuniteService {
+  toggleValidation(id: number, status: boolean): Observable<OpportuniteItem> {
+    return this.http.put<OpportuniteItem>(`${this.baseUrl}/${id}/validation`, { isvalid: status });
+  }
   private baseUrl = 'https://peeyconnect.net:8080/api/v1';
   
+  
   constructor(private http: HttpClient) { }
+  ngOnInit(): void {
+    this.getOpportunites();
+  }
 
   // Récupérer toutes les opportunités paginées
   getOpportunites(page: number = 0, size: number = 12): Observable<OpportuniteResponse> {
@@ -65,3 +72,7 @@ export class OpportuniteService {
     return this.http.get<OpportuniteItem>(`${this.baseUrl}/opportunite/${id}`);
   }
 }
+
+// function ngOnInit() {
+//   throw new Error('Function not implemented.');
+// }

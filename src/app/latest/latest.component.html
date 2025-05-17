@@ -13,47 +13,40 @@
   </div>
   
   <!-- Content grid -->
-  <div class="insights-grid" *ngIf="!loading && !error">
-    <ng-container *ngFor="let insight of insights">
-      <div class="insight-card">
-        <!-- Image maintenant au-dessus -->
-        <div class="image-container">
-          <img [src]="getFullImageUrl(insight.img)" [alt]="insight.titre" 
-               onerror="this.src='assets/images/placeholder.jpg'">
-          <div class="hover-overlay">
-            <p class="overlay-text">Par: {{ insight.auteur }}</p>
-            <button class="learn-more" (click)="navigateToDetails(insight.id); $event.stopPropagation();">Savoir Plus</button>
-          </div>
-        </div>
-        
-        <!-- Contenu textuel maintenant en dessous -->
-        <div class="card-content" (click)="navigateToDetails(insight.id)">
-          <div class="card-type">{{ insight.categorie }}</div>
-          <h3 class="card-title">{{ insight.titre }}</h3>
-          <p class="card-date">{{ formatDate(insight.date) }}</p> 
+  <div class="insights-grid" *ngIf="!loading && !error && insights.length > 0">
+    <div class="insight-card" *ngFor="let insight of insights">
+      <!-- Image maintenant au-dessus -->
+      <div class="image-container">
+        <img [src]="getFullImageUrl(insight.img)" [alt]="insight.titre" 
+             onerror="this.src='assets/images/placeholder.jpg'">
+        <div class="hover-overlay">
+          <p class="overlay-text">Par: {{ insight.auteur }}</p>
+          <button class="learn-more" (click)="navigateToDetails(insight.id); $event.stopPropagation();">Savoir Plus</button>
         </div>
       </div>
-    </ng-container>
+      
+      <!-- Contenu textuel maintenant en dessous -->
+      <div class="card-content" (click)="navigateToDetails(insight.id)">
+        <div class="card-type">{{ insight.categorie }}</div>
+        <h3 class="card-title">{{ insight.titre }}</h3>
+        <p class="card-date">{{ formatDate(insight.date) }}</p> 
+      </div>
+    </div>
   </div>
   
-  <!-- Pagination controls -->
-  <div class="pagination-controls" *ngIf="!loading && !error && allInsights.length > 0">
-    <button class="pagination-btn prev" [disabled]="currentPage === 0" (click)="prevPage()">
-      &laquo; Précédent
+  <!-- Voir plus/moins buttons -->
+  <div class="voir-plus-container" *ngIf="!loading && !error && allInsights.length > initialDisplayCount">
+    <button 
+      *ngIf="!showAllInsights" 
+      class="voir-plus-btn" 
+      (click)="showAllContent()">
+      Voir Plus
     </button>
-    
-    <div class="page-indicators">
-      <button 
-        *ngFor="let page of getPagesArray(); let i = index" 
-        class="page-btn" 
-        [class.active]="i === currentPage"
-        (click)="goToPage(i)">
-        {{ i + 1 }}
-      </button>
-    </div>
-    
-    <button class="pagination-btn next" [disabled]="currentPage === totalPages - 1" (click)="nextPage()">
-      Suivant &raquo;
+    <button 
+      *ngIf="showAllInsights" 
+      class="voir-moins-btn" 
+      (click)="showLessContent()">
+      Voir Moins
     </button>
   </div>
   

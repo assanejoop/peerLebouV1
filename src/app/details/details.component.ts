@@ -3,7 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InfoService, ContentItem } from '../info.service';
 import { HttpClientModule } from '@angular/common/http';
-import { distinctUntilChanged, filter } from 'rxjs';
+import { filter, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-details',
@@ -23,9 +23,9 @@ export class DetailsComponent implements OnInit {
     private router: Router,
     private infoService: InfoService
   ) {
-    // Écoute des changements de route
+    // Écoute des changements de route pour recharger l'article si l'ID change
     this.router.events.pipe(
-      filter((event: any) => event instanceof NavigationEnd),
+      filter((event) => event instanceof NavigationEnd),
       distinctUntilChanged()
     ).subscribe(() => {
       this.loadArticle();
@@ -33,18 +33,22 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  // this.infoService.getActus();
     this.loadArticle();
   }
 
   private loadArticle(): void {
+    // Récupération de l'ID depuis l'URL
     const id = this.route.snapshot.paramMap.get('id');
     
     if (id && !isNaN(+id)) {
       this.fetchArticleDetails(+id);
     } else {
-      this.router.navigate(['/actualites']);
+      console.error('ID non valide dans l\'URL');
+      this.handleInvalidId();
     }
   }
+
   private fetchArticleDetails(id: number): void {
     this.resetStates();
     
@@ -52,9 +56,10 @@ export class DetailsComponent implements OnInit {
       next: (data) => {
         this.article = data;
         this.loading = false;
+        console.log('Article chargé:', this.article);
       },
       error: (err) => {
-        console.error('Error fetching article details:', err);
+        console.error('Erreur lors du chargement de l\'article:', err);
         this.handleError();
       }
     });
@@ -69,14 +74,15 @@ export class DetailsComponent implements OnInit {
   private handleError(): void {
     this.error = true;
     this.loading = false;
-    setTimeout(() => this.router.navigate(['/actualites']), 5000);
+    // Redirection après erreur avec message utilisateur
+    setTimeout(() => this.router.navigate(['/acceuil']), 4000);
   }
 
   private handleInvalidId(): void {
-    console.error('Invalid article ID');
+    console.error('ID d\'article invalide');
     this.error = true;
     this.loading = false;
-    this.router.navigate(['/actualites']);
+    this.router.navigate(['/accueil']);
   }
 
   getFullImageUrl(imagePath: string): string {
@@ -85,7 +91,7 @@ export class DetailsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/actualites']);
+    this.router.navigate(['/accueil']);
   }
 
   openExternalLink(): void {
@@ -105,8 +111,9 @@ export class DetailsComponent implements OnInit {
         year: 'numeric'
       });
     } catch (e) {
-      console.error('Invalid date format:', dateString);
+      console.error('Format de date invalide:', dateString);
       return 'Date invalide';
     }
   }
 }
+//le html 

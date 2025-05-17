@@ -1,43 +1,43 @@
 <div class="details-container">
-    <!-- Back button -->
-    <button class="back-button" (click)="goBack()">
-      <span>&#8592;</span> Retour
-    </button>
+  <!-- Back button -->
+  <button class="back-button" (click)="goBack()">
+    <span>&#8592;</span> Retour
+  </button>
+
+  <!-- Loading state -->
+  <div class="loading-state" *ngIf="loading">
+    <p>Chargement des détails en cours...</p>
+  </div>
   
-    <!-- Loading state -->
-    <div class="loading-state" *ngIf="loading">
-      <p>Chargement des détails en cours...</p>
-    </div>
-    
-    <!-- Error state -->
-    <div class="error-state" *ngIf="error">
-      <p>Impossible de charger les détails. Veuillez réessayer plus tard.</p>
-    </div>
-    
-    <!-- Article content -->
-    <div class="article-content" *ngIf="!loading && !error && article">
-      <div class="article-header">
-        <div class="category">{{ article.categorie }}</div>
-        <h1 class="title">{{ article.titre }}</h1>
-        <div class="meta">
-          <div class="author">
-            <span>Par: {{ article.auteur }}</span>
-            <span class="date">{{ formatDate(article.date) }}</span>
-          </div>
+  <!-- Error state -->
+  <div class="error-state" *ngIf="error">
+    <p>Impossible de charger les détails. Veuillez réessayer plus tard.</p>
+  </div>
+  
+  <!-- Article content -->
+  <div class="article-content" *ngIf="!loading && !error && article">
+    <div class="article-header">
+      <div class="category">{{ article.categorie }}</div>
+      <h1 class="title">{{ article.titre }}</h1>
+      <div class="meta">
+        <div class="author">
+          <span>Par: {{ article.auteur }}</span>
+          <span class="date">{{ formatDate(article.date) }}</span>
         </div>
       </div>
-      
-      <!-- Article image -->
-      <div class="article-image" *ngIf="article.img">
-        <img [src]="getFullImageUrl(article.img)" [alt]="article.titre">
-      </div>
-      
-      <!-- Article body -->
-      <div class="article-body" [innerHTML]="article.contenu"></div>
-      
-      <!-- External link if available -->
-      <div class="external-link" *ngIf="article.lien">
-        <button (click)="openExternalLink()">Voir le lien externe</button>
-      </div>
+    </div>
+    
+    <!-- Article image -->
+    <div class="article-image" *ngIf="article.img">
+      <img [src]="getFullImageUrl(article.img)" [alt]="article.titre">
+    </div>
+    
+    <!-- Article body -->
+    <div class="article-body" [innerHTML]="article.contenu"></div>
+    
+    <!-- External link if available -->
+    <div class="external-link" *ngIf="article.lien">
+      <button (click)="openExternalLink()">Voir le lien externe</button>
     </div>
   </div>
+</div>

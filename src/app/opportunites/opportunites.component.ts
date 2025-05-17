@@ -1,27 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { OpportuniteService, OpportuniteItem, OpportuniteResponse } from '../opportinute.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Subscription, filter } from 'rxjs';
 
 @Component({
   selector: 'app-opportunites',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, RouterModule],
   templateUrl: './opportunites.component.html',
   styleUrl: './opportunites.component.css'
 })
-export class OpportunitesComponent implements OnInit {
+export class OpportunitesComponent implements OnInit, OnDestroy {
   opportunites: OpportuniteItem[] = [];
-  allOpportunites: OpportuniteItem[] = []; // Stocke toutes les opportunités
+  allOpportunites: OpportuniteItem[] = [];
   loading = true;
   error = false;
   imageBaseUrl = 'http://peeyconnect.net/repertoire_upload/';
-  
-  // Pagination properties
-  itemsPerPage = 4;
-  currentPage = 0;
-  totalPages = 0;
+
+  initialDisplayCount = 3;
+  showAllOpportunites = false;
+
+  private navigationSubscription?: Subscription;
 
   constructor(
     private opportuniteService: OpportuniteService,
@@ -29,73 +30,82 @@ export class OpportunitesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchOpportunites();
+    // Chargement initial
+    this.fetchLatestOpportunites();
+
+    // Recharger les opportunités à chaque retour sur cette route
+    this.navigationSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.fetchLatestOpportunites();
+      });
   }
 
-  fetchOpportunites(): void {
+  ngOnDestroy(): void {
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
+  }
+
+  fetchLatestOpportunites(): void {
+    console.log('Chargement des opportunités...');
     this.loading = true;
+    this.error = false;
+
     this.opportuniteService.getOpportunites(0, 12).subscribe({
       next: (response: OpportuniteResponse) => {
-        this.allOpportunites = response.content;
-        this.totalPages = Math.ceil(this.allOpportunites.length / this.itemsPerPage);
-        this.updateDisplayedOpportunites();
+        console.log('Réponse API reçue:', response);
+
+        if (response && response.content) {
+          this.allOpportunites = response.content;
+          console.log('Opportunités chargées:', this.allOpportunites);
+          this.updateDisplayedOpportunites();
+        } else {
+          console.error('Format de réponse invalide:', response);
+          this.error = true;
+        }
+
         this.loading = false;
-        console.log('Opportunités chargées:', this.allOpportunites);
       },
       error: (err) => {
-        console.error('Error fetching opportunites:', err);
+        console.error('Type d\'erreur:', err.status, err.statusText);
+        console.error('Message d\'erreur:', err.message);
+        console.error('Erreur complète:', err);
         this.error = true;
         this.loading = false;
+      
       }
     });
   }
 
-  // Mettre à jour les opportunités affichées en fonction de la page courante
   updateDisplayedOpportunites(): void {
-    const startIndex = this.currentPage * this.itemsPerPage;
-    this.opportunites = this.allOpportunites.slice(startIndex, startIndex + this.itemsPerPage);
+    this.opportunites = this.showAllOpportunites
+      ? [...this.allOpportunites]
+      : this.allOpportunites.slice(0, this.initialDisplayCount);
   }
 
-  // Navigation entre les pages
-  goToPage(pageIndex: number): void {
-    if (pageIndex >= 0 && pageIndex < this.totalPages) {
-      this.currentPage = pageIndex;
-      this.updateDisplayedOpportunites();
-    }
+  showAllContent(): void {
+    this.showAllOpportunites = true;
+    this.updateDisplayedOpportunites();
   }
 
-  // Page suivante
-  nextPage(): void {
-    if (this.currentPage < this.totalPages - 1) {
-      this.currentPage++;
-      this.updateDisplayedOpportunites();
-    }
+  showLessContent(): void {
+    this.showAllOpportunites = false;
+    this.updateDisplayedOpportunites();
   }
 
-  // Page précédente
-  prevPage(): void {
-    if (this.currentPage > 0) {
-      this.currentPage--;
-      this.updateDisplayedOpportunites();
-    }
-  }
-
-  // Helper method to construct full image URL
   getFullImageUrl(imagePath: string): string {
     if (!imagePath) return 'assets/images/placeholder.jpg';
     return this.imageBaseUrl + imagePath;
   }
 
-  // Navigation vers la page détails
   navigateToDetails(id: number): void {
     if (!id || isNaN(id)) {
       console.error('ID invalide:', id);
       return;
     }
-    
-    console.log('Navigation vers les détails avec ID:', id);
-    
-    this.router.navigateByUrl(`/opportunite-details/${id}`).then(success => {
+
+    this.router.navigate(['/opportunite-details', id]).then(success => {
       if (!success) {
         console.error('La navigation a échoué');
       }
@@ -103,19 +113,18 @@ export class OpportunitesComponent implements OnInit {
       console.error('Erreur lors de la navigation:', err);
     });
   }
-  
-  // Helper function to format date
+
   formatDate(dateString: string): string {
+    if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleDateString('fr-FR', {
-      day: 'numeric', 
+      day: 'numeric',
       month: 'long',
       year: 'numeric'
     });
   }
 
-  // Génère un tableau pour l'affichage des boutons de pagination
-  getPagesArray(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i);
+  retryLoading(): void {
+    this.fetchLatestOpportunites();
   }
 }

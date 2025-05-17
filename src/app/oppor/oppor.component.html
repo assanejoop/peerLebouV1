@@ -1,0 +1,80 @@
+<div class="flex">
+    <app-sidebar></app-sidebar>
+    <div class="oppor-container">
+        <div class="section-title">
+            <h2>Opportunités</h2>
+            <div class="underline"></div>
+        </div>
+  
+        <div *ngIf="loading" class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Chargement des opportunités...</p>
+        </div>
+  
+        <div *ngIf="error" class="error-message">
+            <p>Une erreur est survenue lors du chargement des opportunités. Veuillez réessayer plus tard.</p>
+        </div>
+  
+        <div *ngIf="!loading && !error" class="oppor-list">
+            <div class="oppor-card" *ngFor="let oppor of opporList">
+                <div class="oppor-image" (click)="goToOpporDetail(oppor.id)">
+                    <img [src]="oppor.img" [alt]="oppor.titre" (error)="oppor.img='assets/images/placeholder.jpg'">
+                </div>
+                <div class="oppor-content">
+                    <h3 (click)="goToOpporDetail(oppor.id)">{{ oppor.titre }}</h3>
+                    <p class="oppor-description" (click)="goToOpporDetail(oppor.id)">{{ oppor.descr }}</p>
+                    <div class="oppor-info">
+                        <div class="oppor-author">
+                            <img [src]="oppor.auteurimg" [alt]="oppor.auteur" (error)="oppor.auteurimg='assets/images/user-placeholder.jpg'">
+                            <span>{{ oppor.auteur }}</span>
+                        </div>
+                        <div class="oppor-date">
+                            <i class="fa fa-calendar"></i>
+                            <span>{{ formatDate(oppor.date) }}</span>
+                        </div>
+                    </div>
+                    <div class="validation-action">
+                        <button 
+                            [ngClass]="oppor.isvalid ? 'btn-invalid' : 'btn-valid'" 
+                            (click)="toggleValidation($event, oppor)"
+                            [disabled]="processingId === oppor.id">
+                            <span *ngIf="processingId !== oppor.id">
+                                {{ oppor.isvalid ? 'Invalider' : 'Valider' }}
+                            </span>
+                            <span *ngIf="processingId === oppor.id" class="btn-spinner"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+        <!-- Pagination -->
+        <div *ngIf="totalPages > 1" class="pagination">
+            <button 
+                [disabled]="currentPage === 0" 
+                (click)="previousPage()" 
+                class="pagination-btn"
+                [class.disabled]="currentPage === 0">
+                <i class="fa fa-chevron-left"></i>
+            </button>
+      
+            <div class="page-numbers">
+                <button *ngFor="let page of getPageNumbers()" 
+                    (click)="goToPage(page)"
+                    class="page-number"
+                    [class.active]="currentPage === page">
+                    {{ page + 1 }}
+                </button>
+            </div>
+      
+            <button 
+                [disabled]="currentPage === totalPages - 1" 
+                (click)="nextPage()" 
+                class="pagination-btn"
+                [class.disabled]="currentPage === totalPages - 1">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+  </div>
+  
