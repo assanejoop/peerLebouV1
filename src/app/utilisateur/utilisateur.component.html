@@ -126,7 +126,7 @@
                 <td>{{ user.telephone || 'Non défini' }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.profession || 'Non défini' }}</td>
-                <td>{{ user.role }}</td>
+                <td>{{ getRoleName(user.role) }}</td>
                 <td class="actions-cell">
                   <button class="action-button">
                     <i class="fas fa-edit"></i>
