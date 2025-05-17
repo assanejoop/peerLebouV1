@@ -72,9 +72,9 @@ export const routes: Routes = [
       reuseComponent: false // Force le rechargement du composant
     }
   },
-  { 
-    path: '**', 
-    redirectTo: 'login',
-    pathMatch: 'full' 
-  }
+  // { 
+  //   path: '**', 
+  //   redirectTo: 'login',
+  //   pathMatch: 'full' 
+  // }
 ];
