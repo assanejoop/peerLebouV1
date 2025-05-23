@@ -14,7 +14,7 @@ export class OurtakeComponent {
     title: 'Téléchargez Peey Connect',
     subtitle: 'Disponible dès maintenant sur le Play Store et l’Apple Store pour rester connecté partout',    
     image: {
-      src: 'img/image.png',
+      src: 'img/iphone.png',
       alt: 'Newsletter sur téléphone'
     }
   };

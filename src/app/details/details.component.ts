@@ -13,6 +13,32 @@ import { filter, distinctUntilChanged } from 'rxjs/operators';
   styleUrl: './details.component.css'
 })
 export class DetailsComponent implements OnInit {
+  shareOnSocial(platform: string): void {
+    if (!this.article) return;
+    
+    let shareUrl = '';
+    const currentUrl = window.location.href;
+    const text = `Découvrez cette opportunité: ${this.article.titre}`;
+    
+    switch(platform) {
+      case 'facebook':
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+        break;
+      case 'twitter':
+        shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentUrl)}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
+        break;
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + currentUrl)}`;
+        break;
+    }
+    
+    if (shareUrl) {
+      window.open(shareUrl, '_blank', 'width=600,height=400');
+    }
+  }
   article: ContentItem | null = null;
   loading = true;
   error = false;

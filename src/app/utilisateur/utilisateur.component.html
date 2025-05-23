@@ -392,9 +392,15 @@
                     class="form-control"
                     [ngClass]="{'is-invalid': isFieldInvalid('role')}"
                   >
-                    <option value="user">Utilisateur</option>
-                    <option value="manager">Gestionnaire</option>
-                    <option value="admin">Administrateur</option>
+                    <option value="">Sélectionner un rôle</option>
+                    <option value="USER">Utilisateur</option>
+                    <option value="ASSISTANT">Assistante</option>
+                    <option value="MODERATOR">Modérateur</option>
+                    <option value="TREASURER">Trésorier</option>
+                    <option value="ADMIN">Administrateur</option>
+                    <option value="CONTENT_ADMINISTRATOR">Administrateur Contenu</option>
+                    <option value="MAIN_ADMINISTRATOR">Administrateur Principal</option>
+                    <option value="SUPER_ADMINISTRATOR">Super Administrateur</option>
                   </select>
                 </div>
                 

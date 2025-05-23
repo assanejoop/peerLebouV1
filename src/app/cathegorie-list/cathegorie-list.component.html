@@ -11,14 +11,12 @@
       <div class="column left-column">         
         <div class="panel">           
           <h2>Nouvelle Categorie</h2>                      
-          <div *ngIf="!showAddForm" class="add-category-prompt">             
+          <!-- <div *ngIf="!showAddForm" class="add-category-prompt">             
             <button class="btn-add" (click)="toggleAddForm()">               
               Ajouter une nouvelle catégorie             
             </button>           
-          </div>                      
-          <app-categorie-create              
-            *ngIf="showAddForm"              
-            (categorieAdded)="onCategorieAdded($event)">           
+          </div>                       -->
+          <app-categorie-create>           
           </app-categorie-create>         
         </div>       
       </div>              

@@ -9,7 +9,7 @@
   font-size: 2.5rem;
   font-weight: bold;
   position: relative;
-  left: 16.5%;
+  left: 17.5%;
 }
 
 .insights-grid {
@@ -172,7 +172,7 @@
 }
 
 .voir-plus-btn, .voir-moins-btn {
-  background-color: #007bff;
+  background-color: #20a439;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -183,5 +183,5 @@
 }
 
 .voir-plus-btn:hover, .voir-moins-btn:hover {
-  background-color: #0056b3;
+  background-color: #1c782d;
 }

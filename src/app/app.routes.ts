@@ -9,6 +9,8 @@ import { UtilisateurComponent } from './utilisateur/utilisateur.component';
 import { CategorieListComponent } from './cathegorie-list/cathegorie-list.component';
  import { OpporComponent } from './oppor/oppor.component';
 import { ActuComponent } from './actu/actu.component';
+import { FullVideoComponent } from './full-video/full-video.component';
+import { CampagneComponent } from './campagne/campagne.component';
 
 export const routes: Routes = [
   { 
@@ -37,9 +39,19 @@ export const routes: Routes = [
     title: 'Accueil'
   },
   { 
+    path: 'campagne', 
+    component: CampagneComponent,
+    title: 'Campagne'
+  },
+  { 
     path: 'actualites', 
     component: LatestComponent,
     title: 'Actualités' 
+  },
+  { 
+    path: 'full-video', 
+    component: FullVideoComponent,
+    title: 'Full-video' 
   },
   { 
     path: 'details/:id', 

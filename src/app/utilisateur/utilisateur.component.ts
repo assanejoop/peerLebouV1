@@ -263,18 +263,28 @@ export class UtilisateurComponent implements OnInit {
   //   }
   // }
 
-  getRoleName(role: string): string {
-    switch (role) {
-      case 'ADMIN':
-        return 'Admin';
-      case 'USER':
-        return 'Utilisateur';
-      case 'MODERATOR':
-        return 'Modérateur';
-      default:
-        return role;
-    }
+getRoleName(role: string): string {
+  switch (role) {
+    case 'SUPER_ADMINISTRATOR':
+      return 'Super Administrateur';
+    case 'MAIN_ADMINISTRATOR':
+      return 'Administrateur Principal';
+    case 'CONTENT_ADMINISTRATOR':
+      return 'Administrateur Contenu';
+    case 'ADMIN':
+      return 'Administrateur';
+    case 'TREASURER':
+      return 'Trésorier';
+    case 'MODERATOR':
+      return 'Modérateur';
+    case 'ASSISTANT':
+      return 'Assistante';
+    case 'USER':
+      return 'Utilisateur';
+    default:
+      return role;
   }
+}
 
   getStatusColor(role: string): string {
     switch (role) {

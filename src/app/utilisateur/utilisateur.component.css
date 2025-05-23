@@ -1,5 +1,5 @@
 /* Variables CSS globales */
-:root {
+/* :root {
   --primary-color: #065413;;
   --primary-hover: #065413;;
   --danger-color: #ef4444;
@@ -15,7 +15,7 @@
   --radius-md: 6px;
   --radius-lg: 8px;
   --transition: all 0.25s ease;
-}
+} */
 
 /* Layout principal avec flexbox */
 .container-fluid {

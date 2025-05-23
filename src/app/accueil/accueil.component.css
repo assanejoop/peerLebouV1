@@ -123,8 +123,6 @@
 }
 .logo{
     height: 70px;
-    position: relative;
-    top: 18px;
     align-items: center;
 }
 .dropdown-content .description h1 {

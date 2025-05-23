@@ -7,7 +7,7 @@ import { User, NewUser } from './utilisateur/utilisateur.component';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://peeyconnect.net/api/v1/user';
+  private apiUrl = 'https://peeyconnect.net/api/v1';
   
   constructor(private http: HttpClient) { }
   
@@ -15,7 +15,7 @@ export class UserService {
    * Récupérer tous les utilisateurs
    */
   getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/all`);
+    return this.http.get<User[]>(`${this.apiUrl}/user/all`);
   }
   
   /**
@@ -31,7 +31,7 @@ export class UserService {
    * @param newUser Données du nouvel utilisateur
    */
   createUser(newUser: NewUser): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/create`, newUser);
+    return this.http.post<User>(`${this.apiUrl}/auth/signup`, newUser);
   }
   
   /**
@@ -48,7 +48,7 @@ export class UserService {
    * @param id ID de l'utilisateur à supprimer
    */
   deleteUser(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/user/${id}`);
+    return this.http.delete(`${this.apiUrl}/user/user/${id}`);
   }
   
   /**
@@ -77,3 +77,4 @@ export class UserService {
     return this.http.patch<User>(`${this.apiUrl}/user/${id}/activation`, { activated: status });
   }
 }
+

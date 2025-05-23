@@ -7,6 +7,7 @@ import { LatestComponent } from '../latest/latest.component';
 import { CommitmentComponent } from '../commitment/commitment.component';
 import { OpportunitesComponent } from '../opportunites/opportunites.component';
 import { FooterComponent } from "../footer/footer.component";
+import { VideoComponent } from "../video/video.component";
 
 @Component({
   selector: 'app-accueil',
@@ -19,7 +20,8 @@ import { FooterComponent } from "../footer/footer.component";
     LatestComponent,
     CommitmentComponent,
     OpportunitesComponent,
-    FooterComponent
+    FooterComponent,
+    VideoComponent
 ],
   templateUrl: './accueil.component.html',
   styleUrls: ['./accueil.component.css']
